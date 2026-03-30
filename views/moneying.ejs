@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบสำคัญการจ่ายเงิน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 30px 20px;
+  }
+
+  .page-wrapper {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm 20mm 15mm 20mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    position: relative;
+  }
+
+  /* Doc number top right */
+  .doc-number {
+    position: absolute;
+    top: 15mm;
+    right: 20mm;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .doc-number label { font-weight: 400; }
+  .doc-number input {
+    border: none;
+    border-bottom: 1px solid #333;
+    width: 120px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    padding: 0 4px;
+    background: transparent;
+  }
+
+  /* Title */
+  .title-section {
+    text-align: center;
+    margin-bottom: 6px;
+    margin-top: 8mm;
+  }
+  .title-main {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .title-sub {
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  /* Date row */
+  .date-row {
+    text-align: center;
+    margin: 8px 0 14px 0;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+  .date-row input {
+    border: none;
+    border-bottom: 1px solid #333;
+    width: 220px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    text-align: center;
+    background: transparent;
+  }
+
+  /* Info rows */
+  .info-section { margin-bottom: 10px; }
+  .info-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+  .info-row label { white-space: nowrap; font-weight: 400; min-width: fit-content; }
+  .info-row input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #333;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    background: transparent;
+    padding: 0 4px;
+  }
+  .info-row .suffix { white-space: nowrap; }
+
+  /* Table */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 16px 0;
+    font-size: 13px;
+  }
+  .items-table th, .items-table td {
+    border: 1px solid #333;
+    padding: 5px 8px;
+    text-align: center;
+  }
+  .items-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .items-table td.item-name { text-align: left; }
+  .items-table td.amount, .items-table td.note { text-align: left; }
+  .items-table td input {
+    width: 100%;
+    border: none;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    background: transparent;
+    text-align: inherit;
+    padding: 1px 0;
+  }
+  .items-table .col-no { width: 40px; }
+  .items-table .col-item { width: auto; }
+  .items-table .col-amount { width: 120px; }
+  .items-table .col-note { width: 160px; }
+
+  /* Total row */
+  .total-row td {
+    font-weight: 600;
+  }
+  .total-label { text-align: center !important; }
+  .total-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 400;
+    font-size: 12.5px;
+  }
+  .total-status input {
+    flex: 1;
+  }
+
+  /* Bottom section: ตัวหนังสือ + signatures aligned in same grid */
+  .bottom-section {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: flex-end;
+  }
+  .bottom-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    font-size: 13px;
+    width: 60%;
+  }
+  /* Left label column — fixed width so all rows align */
+  .bottom-row .b-label {
+    white-space: nowrap;
+    min-width: 72px;
+    padding-top: 2px;
+  }
+  /* Center input block */
+  .bottom-row .b-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .bottom-row .b-center .line-input {
+    border: none;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    text-align: center;
+    background: transparent;
+    padding: 1px 4px;
+  }
+  .bottom-row .b-center .paren-row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    width: 100%;
+    justify-content: center;
+  }
+  .bottom-row .b-center .paren-row input {
+    border: none;
+    border-bottom: 1px solid #333;
+    width: 80%;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    outline: none;
+    text-align: center;
+    background: transparent;
+  }
+  .bottom-row .b-center .static-name {
+    font-size: 13px;
+  }
+  .bottom-row .b-center .static-role {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  /* Right role label */
+  .bottom-row .b-role {
+    white-space: nowrap;
+    min-width: 72px;
+    text-align: right;
+    padding-top: 2px;
+  }
+
+  /* Footer note */
+  .footer-note {
+    margin-top: 30px;
+    font-size: 12px;
+    border-top: 1px solid #aaa;
+    padding-top: 8px;
+  }
+  .footer-note .note-title { font-weight: 600; }
+
+  /* Print button */
+  .print-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #2c2c2c;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: background 0.2s;
+  }
+  .print-btn:hover { background: #444; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page-wrapper { box-shadow: none; width: 100%; min-height: auto; }
+    .print-btn { display: none; }
+    input { border-bottom-color: #aaa !important; }
+  }
+</style>
+</head>
+<body>
+
+    <% const now = new Date();
+    const d = String(now.getDate()).padStart(2, '0');
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const y = now.getFullYear() + 543;
+    const h = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    
+    const fullDate = `${d}-${m}-${y}-${h}:${min}`;
+    const datere = `${y - 543}-${m}-${d}`; %>
+
+    <form action="/addmoney" method="post">
+        <div class="page-wrapper">
+
+  <!-- Doc number -->
+  <div class="doc-number">
+    <label>เลขที่ผู้สมัคร</label>
+    <input id="id" name="id" value="<%= std.id %>" style="text-align: center; font-weight: bold;" type="text" placeholder="">
+  </div>
+
+  <!-- Title -->
+  <div class="title-section">
+    <div class="title-main">ใบสำคัญการจ่ายเงิน</div>
+    <div class="title-sub">โรงเรียนอรพิมพ์วิทยา อำเภอครบุรี สังกัดองค์การบริหารส่วนจังหวัดนครราชสีมา</div>
+  </div>
+
+  <!-- Date -->
+  <div class="date-row">
+    <span>วันที่</span>
+    <input style="text-align: center; align-items: center; font-weight: bold;" value="<%= datere %>" type="text" placeholder="วัน/เดือน/ปี">
+  </div>
+
+  <!-- Info rows -->
+  <div class="info-section">
+    <div class="info-row">
+      <label>ได้รับเงินจาก</label>
+      <input id="name" name="name" style="text-align: center; font-weight: bold;" value="<%= std.name %>" type="text">
+      <span class="suffix">ชั้น</span>
+      <input id="classs" name="classs" style="text-align: center; font-weight: bold;" value="<%= std.classs %>/<%= std.room %>" type="text" style="max-width:120px;">
+    </div>
+    <div class="info-row">
+      <label>ที่อยู่</label>
+      <input id="homestd" name="homestd" style="text-align: center; font-weight: bold;" value="<%= std.homestd %>" type="text">
+    </div>
+    <div class="info-row">
+      <label>รายละเอียดดังรายการต่อไปนี้</label>
+    </div>
+  </div>
+
+  <!-- Items table -->
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th class="col-no">ที่</th>
+        <th class="col-item">รายการ</th>
+        <th class="col-amount">จำนวนเงิน</th>
+        <th class="col-note">หมายเหตุ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td class="item-name">ค่าประกันชีวิต</td>
+        <td class="amount">
+            <select name="pk" id="pk">
+                <option value="200">200</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="item-name">ค่ากระเป๋านักเรียน</td>
+        <td class="amount">
+            <select name="bag" id="bag">
+                <option value="300">300</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="item-name">ค่าเสื้อโปโล</td>
+        <td class="amount">
+            <select name="polo" id="polo">
+                <option value="250">250</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="item-name">ค่าเสื้อกีฬา</td>
+        <td class="amount">
+            <select name="sport" id="sport">
+                <option value="250">250</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td class="item-name">ค่าหุ้นสหกรณ์</td>
+        <td class="amount">
+            <select name="market" id="market">
+                <option value="40">40</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td class="item-name">ค่าเปิดบัญชีธนาคาร</td>
+        <td class="amount">
+            <select name="bank" id="bank">
+                <option value="100">100</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td class="item-name">ค่าโปรแกรมสารสนเทศนักเรียนรายบุคคล</td>
+        <td class="amount">
+            <select name="psis" id="psis">
+                <option value="100">100</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td class="item-name">ค่าประกันของเสียหาย</td>
+        <td class="amount">
+            <select name="damage" id="damage">
+                <option value="100">100</option>
+                <option value="0">0</option>
+            </select>
+        </td>
+        <td class="note"><input type="text"></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2" class="total-label">รวมเป็นเงิน</td>
+        <td class="amount"><input id="moneysum" name="moneysum" readonly type="text"></td>
+        <td class="note">
+          <div class="total-status">
+            <label for="state">สถานะจ่ายเงิน :</label>
+            <select required name="state" id="state">
+                <option value="">โปรดเลือก</option>
+                <option value="เงินสด">เงินสด</option>
+                <option value="โอนจ่าย">โอนจ่าย</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button>สั่งซื้อ</button>
+
+    </form>
+
+
+    <script>
+       function onChange() {
+            const fields = ['pk', 'bag', 'polo', 'sport', 'market', 'bank', 'psis', 'damage'];
+            
+            let moneysum = 0;
+            for (const id of fields) {
+                const val = parseInt(document.querySelector(`#${id}`).value);
+                if (!isNaN(val)) moneysum += val;
+            }
+
+            document.querySelector('#moneysum').value = moneysum;
+        }
+
+        // Auto-recalculate when any select changes
+        document.querySelectorAll('select').forEach(sel => {
+            sel.addEventListener('change', onChange);
+        });
+
+        // Run once on load to show initial total
+        onChange();
+        
+    </script>
+ 
+
+</body>
+</html>

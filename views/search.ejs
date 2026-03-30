@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p>ระบุเลขประจำผู้สมัคร</p>
+    <input type="text" id="id" placeholder="XXXX" autocomplete="off">
+    <button onclick="goTomoney()">ค้นหาข้อมูล</button>
+
+    <script>
+        function goTomoney() {
+            const idDom = document.querySelector("#id");
+            const id = idDom.value;
+
+            window.open("/moneying/" + id, "_blank");
+        }
+    </script>
+    
+</body>
+</html>
