@@ -309,6 +309,10 @@
     <div class="info-row">
       <label>ที่อยู่</label>
       <input style="text-align: center; font-weight: bold;" readonly value="<%= std.homestd %>" type="text">
+    </div><br>
+    <div class="info-row">
+      <label>โทร.</label>
+      <input style="text-align: center; font-weight: bold;" readonly value="<%= std.tel %>" type="text">
     </div>
     <div class="info-row">
       <label>รายละเอียดดังรายการต่อไปนี้</label>
@@ -352,7 +356,7 @@
       </tr>
       <tr>
         <td>5</td>
-        <td class="item-name">ค่าทุนสหกรณ์</td>
+        <td class="item-name">ค่าหุ้นสหกรณ์</td>
         <td class="amount"><input style="text-align: center; font-weight: bold;" readonly value="<%= std.market %>" type="text"></td>
         <td class="note"><input style="text-align: center; font-weight: bold;" type="text"></td>
       </tr>
@@ -390,11 +394,13 @@
   <div class="bottom-section">
 
     <!-- ตัวหนังสือ -->
-    <div class="bottom-row">
+    <!-- <div class="bottom-row">
       <span class="b-label">ตัวหนังสือ </span>
       (________________________________________________________________________)
       <span class="b-role"></span>
-    </div>
+    </div> -->
+
+    <br>
 
     <!-- ลงชื่อผู้จ่ายเงิน -->
     <div class="bottom-row">
@@ -408,6 +414,8 @@
       <span class="b-role">ผู้จ่ายเงิน</span>
     </div>
 
+
+    <br>
     <!-- ลงชื่อผู้รับเงิน -->
     <div class="bottom-row">
       <span class="b-label">ลงชื่อ</span>
