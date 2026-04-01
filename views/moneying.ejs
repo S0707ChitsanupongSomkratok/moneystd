@@ -269,16 +269,15 @@
 </head>
 <body>
 
-    <% const now = new Date();
-    const d = String(now.getDate()).padStart(2, '0');
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const y = now.getFullYear() + 543;
-    const h = String(now.getHours()).padStart(2, '0');
-    const min = String(now.getMinutes()).padStart(2, '0');
-    
-    const fullDate = `${d}-${m}-${y}-${h}:${min}`;
-    const datere = `${y - 543}-${m}-${d}`; %>
-
+    <% 
+    const now = new Date();
+    // แปลงเป็น: 1 เมษายน 2569
+    const thaiFullDate = now.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+%>
     <form action="/addmoney" method="post">
         <div class="page-wrapper">
 
@@ -295,10 +294,14 @@
   </div>
 
   <!-- Date -->
-  <div class="date-row">
+ <div class="date-row">
     <span>วันที่</span>
-    <input style="text-align: center; align-items: center; font-weight: bold;" value="<%= datere %>" type="text" placeholder="วัน/เดือน/ปี">
-  </div>
+    <input style="text-align: center; font-weight: bold;" 
+           readonly 
+           value="<%= thaiFullDate %>" 
+           type="text" 
+           placeholder="วัน/เดือน/ปี">
+</div>
 
   <!-- Info rows -->
   <div class="info-section">
