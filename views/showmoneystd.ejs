@@ -282,21 +282,24 @@
     <div class="title-sub">โรงเรียนอรพิมพ์วิทยา อำเภอครบุรี สังกัดองค์การบริหารส่วนจังหวัดนครราชสีมา</div>
   </div>
 
-  <% const now = new Date();
-    const d = String(now.getDate()).padStart(2, '0');
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const y = now.getFullYear() + 543;
-    const h = String(now.getHours()).padStart(2, '0');
-    const min = String(now.getMinutes()).padStart(2, '0');
-    
-    const fullDate = `${d}-${m}-${y}-${h}:${min}`;
-    const datere = `${y - 543}-${m}-${d}`; %>
+  <% 
+    const now = new Date();
+    // แปลงเป็น: 1 เมษายน 2569
+    const thaiFullDate = now.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+%>
 
-  <!-- Date -->
-  <div class="date-row">
+<div class="date-row">
     <span>วันที่</span>
-    <input style="text-align: center; font-weight: bold;" readonly value="<%= datere %>" type="text" placeholder="วัน/เดือน/ปี">
-  </div>
+    <input style="text-align: center; font-weight: bold;" 
+           readonly 
+           value="<%= thaiFullDate %>" 
+           type="text" 
+           placeholder="วัน/เดือน/ปี">
+</div>
 
   <!-- Info rows -->
   <div class="info-section">
@@ -304,7 +307,7 @@
       <label>ได้รับเงินจาก</label>
       <input style="text-align: center; font-weight: bold;" readonly value="<%= std.name %>" type="text">
       <span class="suffix">ชั้น</span>
-      <input style="text-align: center; font-weight: bold;" readonly value="ม.<%= std.classs %>" type="text" style="max-width:120px;">
+      <input style="text-align: center; font-weight: bold;" readonly value="<%= std.classs %>" type="text" style="max-width:120px;">
     </div>
     <div class="info-row">
       <label>ที่อยู่</label>
@@ -312,7 +315,7 @@
     </div>
     <div class="info-row">
       <label>โทร.</label>
-      <input style="text-align: center; font-weight: bold;" readonly value="<%= std.tel %>" type="text">
+      <input  style="font-weight: bold;" readonly value="<%= std.stdtel %>" type="text">
     </div>
     <div class="info-row">
       <label>รายละเอียดดังรายการต่อไปนี้</label>
@@ -408,7 +411,7 @@
       <div class="b-center">
         <input class="line-input" type="text">
         <div class="paren-row">
-          (<input type="text">)
+          (<input value="<%= std.namefm %>" type="text">)
         </div>
       </div>
       <span class="b-role">ผู้จ่ายเงิน</span>

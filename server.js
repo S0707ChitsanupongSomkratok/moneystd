@@ -76,15 +76,15 @@ app.post('/addmoney', (req, res) => {
         const datemoney = `${y}-${m}-${d}`;
         const timemoney = `${h}:${min}`
 
-        const {id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state } = req.body;
+        const {id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state, stdtel, namefm } = req.body;
 
         // 2. เตรียม SQL (แนะนำให้เอา id ออกจากรายการ INSERT ถ้า id เป็น Auto Increment)
         const sql = `INSERT INTO stdmoney 
-                    (id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state, no, datemoney, time) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                    (id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state, no, datemoney, time, stdtel, namefm) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         // สังเกตว่าผมตัด id ออกจาก values array ด้วย
-        const values = [id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state, no, datemoney, timemoney];
+        const values = [id, name, classs, homestd, pk, bag, polo, sport, market, bank, psis, damage, moneysum, state, no, datemoney, timemoney, stdtel, namefm];
 
         // 3. รันคำสั่งบันทึกข้อมูล
         db.query(sql, values, (err, result) => {
